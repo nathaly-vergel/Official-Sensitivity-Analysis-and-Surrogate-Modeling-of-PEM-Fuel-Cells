@@ -1,0 +1,129 @@
+# configs/original_param_config.yaml
+
+# NOTE: These were the original parameter ranges defined with the project partners. 
+# The ranges for the operating conditions were agreed with Luis, and the ranges
+# for the undetermined physical parameter come from column "Typical values" of
+# Table 3.1. of Gass' thesis.
+# 
+# These parameter ranges were too wide, and many of the configurations sampled 
+# within them would lead to "invalid" polarization curves.
+
+parameters:
+  # -------------------------
+  # Operating conditions (7)
+  # -------------------------
+  - name: Tfc                 # Desired fuel cell temperature (K)
+    type: continuous
+    low: 333
+    high: 363
+    fixed: False
+
+  - name: Pa_des              # Desired anode pressure (Pa)  [1.3; 3] bar
+    type: continuous
+    low: 130000.0
+    high: 300000.0
+    fixed: False
+
+  - name: Pc_des              # Desired cathode pressure (Pc) 
+    type: continuous
+    low: 110000.0
+    high: 300000.0
+    fixed: False
+
+  - name: Sa                  # Stoichiometric ratio of hydrogen
+    type: continuous
+    low: 1.1
+    high: 3.0
+    fixed: False
+
+  - name: Sc                  # Stoichiometric ratio of oxygen
+    type: continuous
+    low: 1.1
+    high: 3.0
+    fixed: False
+
+  - name: Phi_a_des           # Desired anode relative humidity
+    type: continuous
+    low: 0.1
+    high: 0.7
+    fixed: False
+
+  - name: Phi_c_des           # Desired cathode relative humidity
+    type: continuous
+    low: 0.1
+    high: 0.7
+    fixed: False
+
+  # -------------------------------------
+  # Undetermined physical parameters (12)
+  # -------------------------------------
+  - name: epsilon_gdl         # Anode/cathode GDL porosity
+    type: continuous
+    low: 0.55
+    high: 0.8
+    fixed: False
+
+  - name: tau                 # Pore structure coefficient
+    type: continuous
+    low: 1.0
+    high: 4.0
+    fixed: False
+
+  - name: epsilon_mc          # Volume fraction of ionomer in the CL
+    type: continuous
+    low: 0.15
+    high: 0.4
+    fixed: False
+
+  - name: epsilon_c           # Compression ratio of the GDL
+    type: continuous
+    low: 0.15
+    high: 0.3
+    fixed: False
+
+  - name: e                   # Capillary exponent (discrete)
+    type: categorical
+    values: [3, 4, 5]
+    fixed: False
+
+  - name: Re                  # Electron conduction resistance (Ωm²)
+    type: continuous
+    low: 5.0e-7
+    high: 5.0e-6
+    fixed: False
+
+  - name: i0_c_ref            # Cathode exchange current density (A/m²)
+    type: continuous
+    low: 0.001
+    high: 500.0
+    fixed: False
+
+  - name: kappa_co            # Crossover correction coefficient (mol m⁻¹ s⁻¹ Pa⁻¹)
+    type: continuous
+    low: 0.01
+    high: 40.0
+    fixed: False
+
+  - name: kappa_c             # Overpotential correction exponent
+    type: continuous
+    low: 0.0
+    high: 100.0
+    fixed: False
+
+  - name: a_slim              # Limit liquid saturation coeff. (slope of s_lim)
+    type: continuous
+    low: 0.0
+    high: 1.0
+    fixed: False
+
+  - name: b_slim              # Limit liquid saturation coeff. (intercept of s_lim)
+    type: continuous
+    low: 0.0
+    high: 1.0
+    fixed: False
+
+  - name: a_switch            # Limit liquid saturation coeff. (slope of s_switch)
+    type: continuous
+    low: 0.0
+    high: 1.0
+    fixed: False
