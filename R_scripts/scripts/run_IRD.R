@@ -22,6 +22,18 @@
 # - --seed: Random seed (default: 42)
 # - --ird_pkg_dir: Path to local irdpackage dir (default: external/supplementary_2023_ird/irdpackage)
 
+# Example:
+# Rscript scripts/run_ird.R \
+#   --data data/processed/classified_configs_for_IRD_until_2025-06-16.csv \
+#   --target classification \
+#   --positive valid \
+#   --xinterest configs/IRD_reference_config_19.yaml \
+#   --range 0.8,1.0 \
+#   --methods PRIM,MaxBox \
+#   --outdir results/model_validity \
+#   --categorical_overrides e \
+#   --run_name demo_run
+
 suppressWarnings({
   needed <- c("optparse","data.table","mlr3","mlr3learners","mlr3pipelines","iml",
               "ranger","yaml","jsonlite","tools")
