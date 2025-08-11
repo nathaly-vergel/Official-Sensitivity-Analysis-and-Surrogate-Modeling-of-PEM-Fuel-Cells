@@ -70,7 +70,7 @@ option_list <- list(
   make_option(c("-d","--data"), type="character", help="Path to CSV with features + target.", metavar="FILE"),
   make_option(c("-t","--target"), type="character", default="classification", help="Target column [default: %default]."),
   make_option(c("-p","--positive"), type="character", default="valid", help="Positive class label [default: %default]."),
-  make_option(c("-x","--xinterest"), type="character", help="Path to JSON or YAML with x_interest mapping."),
+  make_option(c("-x","--xinterest"), type="character", default =file.path("configs", "IRD_reference_config_19.yaml"), help="Path to JSON or YAML with x_interest mapping."),
   make_option(c("-r","--range"), type="character", default="0.8,1.0", help="Desired probability range 'low,high' [default: %default]."),
   make_option(c("-o","--outdir"), type="character", default=file.path("results","model_validity"), help="Output directory [default: %default]."),
   make_option(c("-m","--methods"), type="character", default="PRIM,MaxBox", help="Methods to run: PRIM,MaxBox,Maire [default: %default]."),
