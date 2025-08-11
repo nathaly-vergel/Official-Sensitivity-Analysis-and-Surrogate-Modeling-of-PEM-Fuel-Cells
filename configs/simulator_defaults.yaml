@@ -1,0 +1,34 @@
+# configs/simulator_defaults.yaml
+
+# --- Modes & plotting (match old sampler) ---
+type_current: polarization
+type_plot: fixed
+type_fuel_cell: manual_setup   # <- previously was manual_setup in build_fixed_parameters()
+
+# --- Silence UI/aux during batch runs (match old) ---
+type_auxiliary: no_auxiliary
+type_control: no_control
+type_purge: no_purge
+type_display: no_display
+
+# --- How to source helper-derived pieces (match old behavior) ---
+override_current_params: false            # do NOT override helper timing by default
+override_polarization_timing: false
+use_computing_from_helpers: true          # use computing_parameters(...) as before
+
+# Optional manual overrides (only used if flags above say so)
+delta_pola: null                          # [delta_t_load_pola, delta_t_break_pola, delta_i_pola, delta_t_ini_pola]
+max_step: null
+n_gdl: null
+t_purge: null                             # [purge_time, delta_purge]
+
+# --- Geometry/constants (old code pulled these from helpers; do NOT override here) ---
+# If you want to force any of these, uncomment and set values. Otherwise helpers will supply them.
+# Aact:
+# Hgdl:
+# Hmem:
+# Hcl:
+# Hgc:
+# Wgc:
+# Lgc:
+# C_scl:
