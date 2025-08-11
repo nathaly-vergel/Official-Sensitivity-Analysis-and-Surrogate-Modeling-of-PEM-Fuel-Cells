@@ -1,0 +1,17 @@
+Random Forest metrics
+Seed: 42
+Data: data/processed/classified_configs_for_IRD_until_2025-06-16.csv
+Target: classification    Positive class: valid
+
+[Test set]
+      classif.acc classif.precision    classif.recall     classif.fbeta 
+        0.9514768         0.9421488         0.9620253         0.9519833 
+      classif.auc 
+        0.9934127 
+
+[Full dataset]
+      classif.acc classif.precision    classif.recall     classif.fbeta 
+        0.9907173         0.9940527         0.9873418         0.9906859 
+      classif.auc 
+        0.9996425 
+
