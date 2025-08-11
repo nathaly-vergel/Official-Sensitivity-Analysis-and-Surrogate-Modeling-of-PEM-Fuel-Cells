@@ -1,1 +1,6 @@
 /data/raw
+__pycache__/
+# Ignore compiled files
+*.pyc
+*.pyo
+*.pyd
