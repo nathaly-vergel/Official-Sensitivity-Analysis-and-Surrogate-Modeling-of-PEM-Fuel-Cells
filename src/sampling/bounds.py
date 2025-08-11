@@ -181,10 +181,37 @@ def validate_sample_against_spec(sample: Dict[str, Any], spec: SamplingSpec) -> 
             v = float(val)
             if not (low <= v <= high):
                 raise SampleValidationError(f"{name} out of bounds [{low}, {high}]: {val}")
+            
         elif ptype == "integer":
             low, high = int(p["low"]), int(p["high"])
-            if not (isinstance(val, (int, np.integer)) and low <= int(val) <= high):
-                raise SampleValidationError(f"{name} must be integer in [{low}, {high}], got {val}")
+
+            # Accept ints and numpy integer types as-is
+            if isinstance(val, (int, np.integer)):
+                v_int = int(val)
+
+            # Accept floats only if exactly integer-valued (e.g., 4.0)
+            elif isinstance(val, float) or isinstance(val, np.floating):
+                if float(val).is_integer():
+                    v_int = int(val)
+                else:
+                    raise SampleValidationError(
+                        f"{name} must be integer in [{low}, {high}], got {val}"
+                    )
+
+            else:
+                raise SampleValidationError(
+                    f"{name} must be integer in [{low}, {high}], got {val}"
+                )
+
+            # Bounds check after coercion
+            if not (low <= v_int <= high):
+                raise SampleValidationError(
+                    f"{name} out of bounds [{low}, {high}]: {v_int}"
+                )
+
+            # Write back coerced int so downstream sees a clean integer
+            augmented[name] = v_int
+
         elif ptype == "categorical":
             allowed = list(p["values"])
             if val not in allowed:
