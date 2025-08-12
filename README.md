@@ -1,6 +1,14 @@
 # Official-Sensitivity-Analysis-and-Surrogate-Modeling-of-PEM-Fuel-Cells
 Repository for the project partners
 
+### Install AlphaPEM:
+```bash
+cd external
+git clone https://github.com/gassraphael/AlphaPEM.git
+cd AlphaPEM
+git checkout 2b042c3
+```
+
 ### Cloning the irdpackage repository
 
 ```bash
