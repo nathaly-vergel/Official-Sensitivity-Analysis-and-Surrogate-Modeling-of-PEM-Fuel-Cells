@@ -1,0 +1,21 @@
+rf:
+  grid:
+    n_estimators: [100, 200, 500]   # Number of trees in the forest.
+    max_depth: [null, 5, 10]        # null → unlimited depth; int limits depth of each tree.
+    min_samples_split: [2, 5, 10]   # Min samples needed to split a node.
+
+xgboost:
+  params:
+    # verbosity: Controls how much info XGBoost prints.
+    # - 0 → silent (recommended for clean logs in production)
+    # - 1 → warnings
+    # - 2 → info
+    # - 3 → debug (very detailed, mainly for development/debugging)
+    verbosity: 0
+
+  grid:
+    n_estimators: [300, 500, 700]   # Number of boosting rounds.
+    max_depth: [6, 8, 10]           # Max depth of each tree.
+    learning_rate: [0.01, 0.05]     # Step size shrinkage.
+    subsample: [0.8, 1.0]           # Fraction of samples per tree.
+    colsample_bytree: [0.8, 1.0]    # Fraction of features per tree.

@@ -1,0 +1,15 @@
+seed: 42
+
+cv:
+  outer_splits: 5
+  inner_splits: 3
+  scoring: r2
+  n_jobs: -1
+  verbose: 0
+
+save:
+  residuals: true
+  timestamp_format: "%Y%m%d_%H%M%S"
+  save_dir: "../results/surrogate_models/"
+
+

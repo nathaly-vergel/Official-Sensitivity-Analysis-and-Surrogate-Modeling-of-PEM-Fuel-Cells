@@ -1,0 +1,7 @@
+criteria:
+  start_in_range: true               # Ensure curve starts within the allowed voltage range
+  approx_monotonic: true              # Require curve to be approximately monotonic (no large reversals)
+  low_ifc_positive_voltage: true      # Require low IFC values to have positive voltage
+
+voltage_range: [0, 1.23]              # Allowed voltage range for data points (min, max)
+approx_monotonic_threshold: 0.05      # Max allowed deviation from monotonicity (voltage change)

@@ -1,0 +1,10 @@
+
+activation:
+  - 0.0
+  - 0.4
+ohmic:
+  - 0.4
+  - 1.6
+mass_transport:
+  - 1.6
+  - 3.0009
