@@ -487,3 +487,34 @@ def create_sobol_sample_dataframe(param_config,parameter_ranges, N=1024, seed=No
 
 
 
+def build_feature_ranking_table(rank_dict):
+    """
+    Create a DataFrame ranking features per region.
+
+    Parameters
+    ----------
+    feature_dict : dict[str, list[str]]
+        Keys are region names; values are ordered features (most important first).
+    sort_region : str, optional
+        Region to sort rows by. NaNs are placed last.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Features as rows, regions as columns, values are 1-based ranks (NaN if absent).
+    """
+    
+    # all variables across regions (rows)
+    all_vars = sorted({v for lst in rank_dict.values() for v in lst})
+
+    # build ranking per region (1-based), then assemble the DataFrame
+    df = pd.DataFrame({
+        region: pd.Series({var: rank for rank, var in enumerate(vars_, start=1)})
+        for region, vars_ in rank_dict.items()
+    }).reindex(all_vars).astype('Int64')  # nullable Int to allow NaN for missing
+
+    df = df.sort_values(by='activation')
+    return df
+
+
+
