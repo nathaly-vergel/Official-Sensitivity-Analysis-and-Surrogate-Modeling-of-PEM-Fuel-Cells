@@ -1,15 +1,23 @@
 COLORS:
-  - "#1f77b4"
-  - "#ff7f0e"
-  - "#2ca02c"
-  - "#d62728"
-  - "#9467bd"
-  - "#612b20"
-  - "#e377c2"
-  - "#7f7f7f"
-  - "#bcbd22"
-  - "#17becf"
-  - "#A6761D"
-  - "#ffbb78"
-  - "#98df8a"
-  - "#393b79"
+  - "#1f77b4"   # blue
+  - "#ff7f0e"   # orange
+  - "#2ca02c"   # green
+  - "#d62728"   # red
+  - "#9467bd"   # purple
+  - "#612b20"   # brown
+  - "#e377c2"   # pink
+  - "#7f7f7f"   # gray
+  - "#bcbd22"   # olive
+  - "#17becf"   # cyan
+  - "#A6761D"   # golden brown
+  - "#ffbb78"   # light orange
+  - "#98df8a"   # light green
+  - "#393b79"   # dark indigo
+  # --- In case more features are included ---
+  - "#8c564b"   # warm earthy brown
+  - "#2ca9a1"   # teal
+  - "#e7969c"   # rose
+  - "#6baed6"   # sky blue
+  - "#b5cf6b"   # lime green
+  - "#fd8d3c"   # bright tangerine
+  - "#c7c7c7"   # light gray
