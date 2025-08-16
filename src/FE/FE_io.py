@@ -12,7 +12,7 @@ from SALib.sample.sobol import sample as sobol_sample
 from SALib.analyze import sobol
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
 from src.analysis.sensitivity import SensitivityAnalyzer
-from src.utils.FE_formatting import expand_column_to_columns,parse_dependent_parameters,load_parameter_ranges
+from src.FE.FE_formatting import expand_column_to_columns,parse_dependent_parameters,load_parameter_ranges
 
 # ----------------------------------------------------------------------
 # Unique color palette for all input parameters
