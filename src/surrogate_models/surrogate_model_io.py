@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
-from src.utils.surrogate_model_factory import pull
+from src.surrogate_models.surrogate_model_factory import pull
 
 def save_cv_results(
     X, y, groups,

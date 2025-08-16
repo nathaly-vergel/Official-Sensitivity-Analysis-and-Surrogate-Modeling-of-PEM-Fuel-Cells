@@ -13,7 +13,7 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="SALib")
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
 from src.analysis.sensitivity import SensitivityAnalyzer
-from src.utils.FE_formatting import parse_dependent_parameters,load_parameter_ranges
+from src.FE.FE_formatting import parse_dependent_parameters,load_parameter_ranges
 
 
 
