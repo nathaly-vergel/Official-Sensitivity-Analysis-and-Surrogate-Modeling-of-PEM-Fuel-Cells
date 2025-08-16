@@ -413,3 +413,47 @@ def _write_errors(errors: List[Dict[str, Any]], path: str) -> None:
         pd.DataFrame([], columns=["index", "config_id", "error"]).to_csv(path, index=False)
         return
     pd.DataFrame(errors).to_csv(path, index=False)
+
+
+
+def run_simulations(design_df_path,output_name,n_samples=5,offset=0):
+    from pathlib import Path
+    import subprocess, shlex 
+    # Relative path to repo root
+    parent = Path("..")
+
+    # Make src importable
+    if str(parent.resolve()) not in sys.path:
+        sys.path.append(str(parent))
+
+    # Paths (lowercase names)
+    alpha_pem_root        = str(parent / "external" / "AlphaPEM")
+    param_config_yaml     = str(parent / "configs" / "param_config.yaml")
+    simulator_defaults_yaml = str(parent / "configs" / "simulator_defaults.yaml")
+    raw_dir               = parent / "data" / "raw"
+    designs_dir           = parent / "data" / "designs"
+
+    # File to be executed
+    script_path = str(parent / "scripts" / "run_sampler_batch_parallel.py")
+
+    args = [
+    sys.executable, str(script_path),
+    "--input", str(design_df_path),
+    "--n_samples", str(n_samples),
+    "--offset", str(offset),
+    "--alpha_pem_root", alpha_pem_root,
+    "--param_config_yaml", param_config_yaml,
+    "--simulator_defaults_yaml", simulator_defaults_yaml,
+    "--verify",
+    "--n_workers", "4",
+    "--save_every", "5",
+    "--output_dir", str(raw_dir),
+    "--run_name", output_name,
+    "--format", "pkl",
+    "--print_errors",]
+    result = subprocess.run(args, capture_output=True, text=True)
+
+    # Print everything
+    print("\nReturn code:", result.returncode)
+    print("\n--- STDOUT ---\n", result.stdout)
+    print("\n--- STDERR ---\n", result.stderr)

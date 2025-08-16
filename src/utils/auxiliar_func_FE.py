@@ -474,15 +474,10 @@ def create_sobol_sample_dataframe(param_config,parameter_ranges, N=1024, seed=No
     
     # Define the identifier for the samples
     df_param_values_final = SA.define_id()
-    
-    # Calculate the dependent parameters
-    dependent_parameter_cmpl = [para for para in param_config['parameters'] if para.get('derived') is not None]
-    
-    if len(dependent_parameter_cmpl) > 0:
-        dependent_parameters = parse_dependent_parameters(dependent_parameter_cmpl)
-        df_param_values_final = SA.apply_dependent_parameters(dependent_parameters)
-    
     df_param_values_final["index"] = df_param_values_final.index
+    ordered_cols = ["config_id", "index"] + df.columns.tolist()
+    # Reorder DataFrame
+    df_param_values_final = df_param_values_final[ordered_cols]
     return df_param_values_final,SA
 
 

@@ -125,7 +125,7 @@ def aggregate_knn_curves(df_valid,df_missing,nearest_indices,agg_fn='mean'):
         else:
             raise ValueError("agg_fn must be either 'mean' or 'median'")
     
-    df_knn_missing = pd.concat([df_missing[['SHA256', 'index']].reset_index(drop=True),
+    df_knn_missing = pd.concat([df_missing[['config_id', 'index']].reset_index(drop=True),
     pd.DataFrame(np.stack(ifc_outputs_knn), columns=[f'ifc_{i}' for i in range(len(ifc_outputs_knn[0]))]),
     pd.DataFrame(np.stack(ucell_outputs_knn), columns=[f'Ucell_{i}' for i in range(len(ucell_outputs_knn[0]))])], axis=1)
     

@@ -59,7 +59,7 @@ class SensitivityAnalyzer:
             # Convert all values to string, concatenate, and hash
             row_string = '|'.join([str(x) for x in row])
             return hashlib.sha256(row_string.encode()).hexdigest()
-        df['SHA256'] = df.apply(generate_row_id, axis=1)
+        df['config_id'] = df.apply(generate_row_id, axis=1)
         self.samples_df = df
         return df
 
@@ -193,90 +193,11 @@ class SensitivityAnalyzer:
                 # S2 is a D×D symmetric matrix; we can store it as-is, 
                 # or flatten only the upper triangle, etc.
                 entry['S2'] = analysis['S2']                   # full matrix
-                entry['S2_conf'] = analysis['S2_conf']         # same shape
+                entry['S2_conf'] = analysis['S2_conf']        # same shape
             results.append(entry)
             results_df.append([ST, S1, S2])
 
         return results,results_df
     
-    def plot_grid(self, results, n_cols=3, same_axis=True):
-        """
-        Plot sensitivity indices for each parameter across outputs.
-        For Morris: mu_star ± sigma.
-        For Sobol & FAST: S1 ± conf and ST ± conf.
-        """
-        method = self.method.lower()
-        params = results[0]['param']
-        n_params = len(params)
-
-
-        S1_all = np.array([r['S1'] for r in results])
-        S1c_all = np.array([r['S1_conf'] for r in results])
-        ST_all = np.array([r['ST'] for r in results])
-        STc_all = np.array([r['ST_conf'] for r in results])
-        primary = S1_all
-        error = S1c_all
-        secondary = ST_all
-        secondary_error = STc_all
-        primary_label = r"$S_1$ +- conf"
-        secondary_label = r"$S_T$ +- conf"
-
-        n_outputs = primary.shape[0]
-
-        # Single output plotting
-        if n_outputs == 1:
-            fig, ax = plt.subplots(figsize=(8, max(2, n_params * 0.5)))
-            indices = np.arange(n_params)
-
-            ax.errorbar(primary[0], indices, xerr=error[0], fmt='o', capsize=3, label=primary_label)
-            if method == 'sobol':
-                ax.errorbar(secondary[0], indices, xerr=secondary_error[0], fmt='s', capsize=3, label=secondary_label)
-
-            ax.set_yticks(indices)
-            ax.set_yticklabels(params)
-            ax.set_xlabel("Sensitivity Index")
-            ax.set_ylabel("Parameter")
-            ax.set_title(f"Sensitivity ({method.capitalize()} - Single Output)")
-            ax.legend()
-            ax.grid(True)
-            plt.tight_layout()
-            plt.show()
-            return
-
-        # Multiple outputs grid
-        n_rows = int(np.ceil(n_params / n_cols))
-        fig, axes = plt.subplots(n_rows, n_cols, figsize=(5 * n_cols, 4 * n_rows))
-        xlims = None
-        if same_axis and (method == 'morris' or method == 'sobol'):
-            all_vals = np.concatenate([primary - error, primary + error])
-            xlims = (np.min(all_vals), np.max(all_vals))
-
-        for idx, param in enumerate(params):
-            ax = axes.flat[idx]
-            y = np.arange(n_outputs)
-            # plot primary
-            if error is not None:
-                ax.errorbar(primary[:, idx], y, xerr=error[:, idx], fmt='-o', capsize=3, label=primary_label)
-            else:
-                ax.plot(primary[:, idx], y, 'o-', label=primary_label)
-            # plot secondary if sobol or fast
-            if method == 'sobol' or method == 'fast':
-                if method == 'sobol':
-                    ax.errorbar(secondary[:, idx], y, xerr=secondary_error[:, idx], fmt='-s', capsize=3, label=secondary_label)
-                else:
-                    ax.plot(secondary[:, idx], y, 's-', label=secondary_label)
-            ax.set_title(param)
-            ax.set_ylabel("Output Index")
-            ax.set_xlabel("Sensitivity")
-            ax.grid(True)
-            ax.legend()
-            if same_axis and xlims is not None:
-                ax.set_xlim(xlims)
-
-        # Remove empty axes
-        for j in range(n_params, len(axes.flat)):
-            fig.delaxes(axes.flat[j])
-
-        fig.suptitle(f"Sensitivity ({method.capitalize()}) Across Outputs", fontsize=16)
-        fig.tight_layout(rect=[0, 0, 1, 0.97])
-        plt.show()
+    
+        
