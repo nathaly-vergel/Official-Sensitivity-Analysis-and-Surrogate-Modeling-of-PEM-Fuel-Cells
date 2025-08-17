@@ -1,25 +1,25 @@
 index,config_id,error
-23,dbaf3c6920e35829b1b76607cfbf3f3e7b7bfe19e4434412967d01876391f27b,array must not contain infs or NaNs
-24,65e5032d41bc22f6e60352819be69afa93fce81b196e2709e192a37b0a3e30e3,array must not contain infs or NaNs
-25,140ffe8ca69006b0dfe866a54d9b69678f0cf69cc807890fc83622055efc10ef,array must not contain infs or NaNs
-20,288982bc27a8e545dc62864c3ed377395f856854249e062ddf8d818d66e98382,array must not contain infs or NaNs
-21,b140334ec43adef3e5f60d9e1396b945ccb9ea8cad372e37b3f65cdd79c512c9,array must not contain infs or NaNs
-22,62dd3f20014b0e8592102a301fc2110df8166ce526947c06047b1becd19aec6f,array must not contain infs or NaNs
-17,d3be8776307f94aa11668b035f8df60eba464dda39c8610751d63d2387e2e1ea,array must not contain infs or NaNs
-18,e3624e7cc0a2dc7975a5aa4caeb5c7c8880931bb1cb898140882ad964a257a97,array must not contain infs or NaNs
-19,33be4aceb17a4d48d6f795f981767914da635b2e9972a0222aed2885fe646a95,array must not contain infs or NaNs
-14,2a7bcc0cd206148218e6c07fb344773d6838c3f3f00f8bb8896a0062f67089db,array must not contain infs or NaNs
-15,a92ebe45db3fa72b07303b7a6a093970cfdf3a95b91de4421e0eeda9d2d3ff45,array must not contain infs or NaNs
-16,ce860d54d71563557c3b277bd9aa5db401573cafd0db7558a1739101c09ff3c9,array must not contain infs or NaNs
-11,9f71b1f02a11311c5d84ba4d73b648154f6e8af517d14372669c0982c18080be,array must not contain infs or NaNs
-12,6a3aa605ce34c863bd683c5fd91c19ca4a3c6c885191758ad2a3b1986f43d6cf,array must not contain infs or NaNs
-13,983cf443ebc5f1fbcf3d47ef151f2557f6d2af5a4065d861362fd7adb6c8474c,array must not contain infs or NaNs
-8,7f73c032425915602cb548eb3b5b9e650a2553fbe2aae3f6e111521ce81bcc6b,array must not contain infs or NaNs
-9,b14bd62deb2378909574f6fb6858e49608027f6cf271deee2e0b86de4a4a69d2,array must not contain infs or NaNs
-10,9774d68e7c37546f4913180d80dd1fc78a1af113f499dfcb790adcc3249480e0,array must not contain infs or NaNs
-4,1afda288a58c50fdc2b13fc9b1830f5da4768914da6d22d089a3cb58fc2532ca,array must not contain infs or NaNs
-5,cb715b131ba5356ae3accb1090873d64b4fa24a371660437acc574105a93552d,array must not contain infs or NaNs
-6,5710ac0f04d7f11aab7129ea10903ce5a5ad4624bc5cbe346ee369b6675bf922,array must not contain infs or NaNs
-7,0dd4dcda6b32421dad9a88c8eb48ade21a071477c2066c4b9bcfd4beef01685c,array must not contain infs or NaNs
-2,270224541b0577c2209eb38775bac24a95ce68a4438afa23735b0ac287fe1e6b,array must not contain infs or NaNs
-3,f8618236b03a059484a214652ca26f19ad809cb3a1ff76319e1f6bca7769df66,array must not contain infs or NaNs
+20,288982bc27a8e545dc62864c3ed377395f856854249e062ddf8d818d66e98382,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+21,b140334ec43adef3e5f60d9e1396b945ccb9ea8cad372e37b3f65cdd79c512c9,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+22,62dd3f20014b0e8592102a301fc2110df8166ce526947c06047b1becd19aec6f,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+14,2a7bcc0cd206148218e6c07fb344773d6838c3f3f00f8bb8896a0062f67089db,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+15,a92ebe45db3fa72b07303b7a6a093970cfdf3a95b91de4421e0eeda9d2d3ff45,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+16,ce860d54d71563557c3b277bd9aa5db401573cafd0db7558a1739101c09ff3c9,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+23,dbaf3c6920e35829b1b76607cfbf3f3e7b7bfe19e4434412967d01876391f27b,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+24,65e5032d41bc22f6e60352819be69afa93fce81b196e2709e192a37b0a3e30e3,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+25,140ffe8ca69006b0dfe866a54d9b69678f0cf69cc807890fc83622055efc10ef,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+17,d3be8776307f94aa11668b035f8df60eba464dda39c8610751d63d2387e2e1ea,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+18,e3624e7cc0a2dc7975a5aa4caeb5c7c8880931bb1cb898140882ad964a257a97,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+19,33be4aceb17a4d48d6f795f981767914da635b2e9972a0222aed2885fe646a95,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+11,9f71b1f02a11311c5d84ba4d73b648154f6e8af517d14372669c0982c18080be,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+12,6a3aa605ce34c863bd683c5fd91c19ca4a3c6c885191758ad2a3b1986f43d6cf,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+13,983cf443ebc5f1fbcf3d47ef151f2557f6d2af5a4065d861362fd7adb6c8474c,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+8,7f73c032425915602cb548eb3b5b9e650a2553fbe2aae3f6e111521ce81bcc6b,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+9,b14bd62deb2378909574f6fb6858e49608027f6cf271deee2e0b86de4a4a69d2,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+10,9774d68e7c37546f4913180d80dd1fc78a1af113f499dfcb790adcc3249480e0,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+4,1afda288a58c50fdc2b13fc9b1830f5da4768914da6d22d089a3cb58fc2532ca,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+5,cb715b131ba5356ae3accb1090873d64b4fa24a371660437acc574105a93552d,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+6,5710ac0f04d7f11aab7129ea10903ce5a5ad4624bc5cbe346ee369b6675bf922,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+7,0dd4dcda6b32421dad9a88c8eb48ade21a071477c2066c4b9bcfd4beef01685c,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+2,270224541b0577c2209eb38775bac24a95ce68a4438afa23735b0ac287fe1e6b,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power
+3,f8618236b03a059484a214652ca26f19ad809cb3a1ff76319e1f6bca7769df66,array must not contain infs or NaNs | external\AlphaPEM\model\dif_eq.py:395 RuntimeWarning: invalid value encountered in scalar power

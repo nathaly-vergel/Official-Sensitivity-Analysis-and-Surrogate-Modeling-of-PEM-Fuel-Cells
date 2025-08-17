@@ -70,12 +70,17 @@ import pandas as pd
 import numpy as np
 from multiprocessing import get_context, cpu_count
 
+# NEW: capture warnings and stderr
+import warnings
+import io
+import contextlib
+
 # --- Make 'src' importable (repo root assumed one level up from this script) ---
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.append(str(REPO_ROOT))
 
-# Reuse components from your new sampler
+# Reuse components from our sampler
 from src.sampling.bounds import (
     load_param_config,
     validate_sample_against_spec,
@@ -116,7 +121,6 @@ def split_evenly(df: pd.DataFrame, n_parts: int) -> List[pd.DataFrame]:
     if n_parts <= 1:
         return [df.copy()]
     n_parts = min(n_parts, len(df)) or 1
-    # np.array_split gives nearly-even chunks
     return [chunk.copy() for chunk in np.array_split(df, n_parts) if len(chunk) > 0]
 
 
@@ -128,7 +132,6 @@ def write_meta(meta_path: str, data: dict) -> None:
     os.replace(tmp, meta_path)
 
 
-
 def read_text(path: str) -> Optional[str]:
     """Read a text file (UTF-8). Return None on failure."""
     try:
@@ -136,6 +139,32 @@ def read_text(path: str) -> Optional[str]:
             return f.read()
     except Exception:
         return None
+
+
+def _format_warnings(wlist: List[warnings.WarningMessage], stderr_text: str) -> Optional[str]:
+    """
+    Build a single, deduplicated warning string for *this row only*.
+    Repeated identical warnings (e.g., per timestep) collapse to one.
+    """
+    seen = set()
+    msgs = []
+    for w in wlist:
+        # normalize to (file:line, category, message)
+        try:
+            rel = os.path.relpath(w.filename, REPO_ROOT)
+        except Exception:
+            rel = w.filename
+        key = (rel, int(w.lineno), w.category.__name__, str(w.message))
+        if key in seen:
+            continue
+        seen.add(key)
+        msgs.append(f"{rel}:{w.lineno} {w.category.__name__}: {w.message}")
+    stderr_text = (stderr_text or "").strip()
+    if stderr_text:
+        # treat entire stderr chunk as one entry
+        msgs.append(f"STDERR: {stderr_text}")
+    return " | ".join(msgs) if msgs else None
+
 
 # ----------------------------- Worker -----------------------------
 
@@ -177,29 +206,62 @@ def _worker_run_chunk(args: Tuple[int, pd.DataFrame, str, str, Optional[str], bo
 
     for j, (idx, row) in enumerate(df_chunk.iterrows(), start=1):
         rec = row.to_dict()
+
+        # Coerce integer-like floats before validation
         try:
-            # Coerce integer-like floats before validation (robustness)
             if spec is not None:
                 for name, p in spec.spec_index.items():
                     if p.get("type") == "integer" and name in rec and isinstance(rec[name], float) and float(rec[name]).is_integer():
                         rec[name] = int(rec[name])
                 rec = validate_sample_against_spec(rec, spec)
-
-            out = runner.run_one(rec)
-            results.append({**row.to_dict(), **out})
-            n_ok += 1
-
         except (SampleValidationError, Exception) as e:
+            # Validation failed before running the simulator
+            warnings_text = None
             fail = row.to_dict()
-            fail.update({"ifc": None, "Ucell": None, "error": str(e)})
+            fail.update({"ifc": None, "Ucell": None, "error": str(e), "warnings": warnings_text})
             results.append(fail)
+            # Merge into single error field in errors CSV
             errors.append({"index": idx, "config_id": row.get("config_id", None), "error": str(e)})
             n_err += 1
-
             if print_errors:
                 cid = row.get("config_id", None)
-                print(f"Worker {worker_id}: could not simulate index={idx}{'' if cid is None else f', config_id={cid}'}")
+                print(f"Worker {worker_id}: could not validate index={idx}{'' if cid is None else f', config_id={cid}'}")
                 print(f"  Error: {e}")
+            continue
+
+        # Run the simulator with warnings + stderr capture (THIS ROW ONLY)
+        with warnings.catch_warnings(record=True) as wlist:
+            warnings.simplefilter("always")
+            errbuf = io.StringIO()
+            try:
+                with contextlib.redirect_stderr(errbuf):
+                    out = runner.run_one(rec)
+
+                warnings_text = _format_warnings(wlist, errbuf.getvalue())
+                # Store per-row warnings in results (useful for noisy successes)
+                res_rec = {**row.to_dict(), **out, "warnings": warnings_text}
+                results.append(res_rec)
+                n_ok += 1
+
+            except (SampleValidationError, Exception) as e:
+                warnings_text = _format_warnings(wlist, errbuf.getvalue())
+                fail = row.to_dict()
+                fail.update({"ifc": None, "Ucell": None, "error": str(e), "warnings": warnings_text})
+                results.append(fail)
+
+                # *** Merge error + this row's warnings into ONE error string ***
+                merged_error = str(e) if not warnings_text else f"{str(e)} | {warnings_text}"
+                errors.append({
+                    "index": idx,
+                    "config_id": row.get("config_id", None),
+                    "error": merged_error
+                })
+                n_err += 1
+
+                if print_errors:
+                    cid = row.get("config_id", None)
+                    print(f"Worker {worker_id}: could not simulate index={idx}{'' if cid is None else f', config_id={cid}'}")
+                    print(f"  Error: {merged_error}")
 
         # Per-worker checkpoint
         if (j % save_every) == 0:
@@ -207,7 +269,10 @@ def _worker_run_chunk(args: Tuple[int, pd.DataFrame, str, str, Optional[str], bo
             df_tmp = _expand_arrays(df_tmp, "ifc", "ifc", n_target=n_target or 31)
             df_tmp = _expand_arrays(df_tmp, "Ucell", "Ucell", n_target=n_target or 31)
             df_tmp.to_pickle(res_path)
-            pd.DataFrame(errors or [], columns=["index", "config_id", "error"]).to_csv(err_path, index=False)
+
+            # Write errors CSV with EXACT columns: index, config_id, error
+            err_df = pd.DataFrame(errors or [], columns=["index", "config_id", "error"])
+            err_df.to_csv(err_path, index=False)
             print(f"Worker {worker_id}: checkpoint ({j} rows in chunk) → {os.path.basename(res_path)}")
 
     # Final per-worker write
@@ -215,7 +280,9 @@ def _worker_run_chunk(args: Tuple[int, pd.DataFrame, str, str, Optional[str], bo
     df_tmp = _expand_arrays(df_tmp, "ifc", "ifc", n_target=n_target or 31)
     df_tmp = _expand_arrays(df_tmp, "Ucell", "Ucell", n_target=n_target or 31)
     df_tmp.to_pickle(res_path)
-    pd.DataFrame(errors or [], columns=["index", "config_id", "error"]).to_csv(err_path, index=False)
+
+    err_df = pd.DataFrame(errors or [], columns=["index", "config_id", "error"])
+    err_df.to_csv(err_path, index=False)
 
     print(f"Worker {worker_id}: done | ok={n_ok}, err={n_err} → {os.path.basename(res_path)}")
     return res_path, err_path, n_ok, n_err
@@ -370,7 +437,7 @@ def main():
         else:
             out_df.to_pickle(results_path)
 
-        # Merge errors
+        # Merge errors (columns EXACTLY: index, config_id, error)
         err_dfs = []
         for p in err_files:
             try:
@@ -378,7 +445,9 @@ def main():
             except Exception:
                 pass
         if err_dfs:
-            pd.concat(err_dfs, axis=0, ignore_index=True).to_csv(errors_path, index=False)
+            all_errs = pd.concat(err_dfs, axis=0, ignore_index=True)
+            all_errs = all_errs.reindex(columns=["index", "config_id", "error"])
+            all_errs.to_csv(errors_path, index=False)
         else:
             pd.DataFrame([], columns=["index","config_id","error"]).to_csv(errors_path, index=False)
 
@@ -412,7 +481,6 @@ def main():
 
     except KeyboardInterrupt:
         print("Interrupted. Temp files kept.")
-        # Interrupted meta update
         end_ts = datetime.now().isoformat(timespec="seconds")
         end_t  = datetime.now().timestamp()
         interrupted_meta = dict(initial_meta)
@@ -429,7 +497,6 @@ def main():
     except Exception as e:
         print(f"Run failed: {e}")
         print("Temp files kept for inspection.")
-        # Failure meta update
         end_ts = datetime.now().isoformat(timespec="seconds")
         end_t  = datetime.now().timestamp()
         fail_meta = dict(initial_meta)
@@ -446,7 +513,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # Windows needs this guard + freeze_support for multiprocessing to spawn properly
     import multiprocessing as mp
     mp.freeze_support()
     main()
