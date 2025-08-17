@@ -475,7 +475,7 @@ def create_sobol_sample_dataframe(param_config,parameter_ranges, N=1024, seed=No
     # Define the identifier for the samples
     df_param_values_final = SA.define_id()
     df_param_values_final["index"] = df_param_values_final.index
-    ordered_cols = ["config_id", "index"] + df.columns.tolist()
+    ordered_cols = ["index", "config_id"] + df.columns.tolist()
     # Reorder DataFrame
     df_param_values_final = df_param_values_final[ordered_cols]
     return df_param_values_final,SA
