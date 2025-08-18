@@ -20,7 +20,7 @@ from itertools import product
 # Adjust the path to point to external/AlphaPEM
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
 from src.validity.validity_criteria import validate_polarization_curves
-from src.utils.surrogate_model_factory import get_model_and_grid, compute_metrics,pull,build_region_masks
+from src.surrogate_models.surrogate_model_factory import get_model_and_grid, compute_metrics,pull,build_region_masks
 
 def nested_cv_train_with_groups(X, y, groups, feature_names,grid_search_cfg ,core_training_cfg,regions_cfg, model_name='rf', outer_splits=None, inner_splits=None,
     random_state=None, save_residuals=None,  ):
